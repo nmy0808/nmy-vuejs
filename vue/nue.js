@@ -63,6 +63,7 @@ class Nue {
         }
         this.$data = options.data;
         this.$methods = options.methods;
+        this.proxyData();
         if (this.$el) {
             new Observer(this.$data);
             new Compier(this);
@@ -72,6 +73,19 @@ class Nue {
     // 判断是否是一个元素
     isElement(node) {
         return node.nodeType === 1;
+    }
+
+    proxyData() {
+        for (const key in this.$data) {
+            Object.defineProperty(this, key, {
+                get: () => {
+                    return this.$data[key];
+                },
+                set: (newValue) => {
+                    this.$data[key] = newValue;
+                }
+            })
+        }
     }
 }
 
