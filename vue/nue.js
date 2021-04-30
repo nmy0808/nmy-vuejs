@@ -10,6 +10,14 @@ const compilerUtil = {
         // 确定是插值表达式
         return content.replace(reg, (...[, $1]) => this.getValue($1.trim(), vm));
     },
+    setValue(vm, value, newValue) {
+        return value.split('.').reduce((data, currentKey, index, arr) => {
+            if (index === arr.length - 1) {
+                data[currentKey] = newValue;
+            }
+            return data[currentKey];
+        }, vm.$data)
+    },
     model: function (node, value, vm) {
         // 在第一次渲染的时候, 就给所有的属性添加观察者
         Dep.target = new Watcher(vm, value, (newValue, oldValue) => {
@@ -17,6 +25,9 @@ const compilerUtil = {
         })
         node.value = this.getValue(value, vm);
         Dep.target = null;
+        node.addEventListener('input', (e) => {
+            this.setValue(vm, value, e.target.value);
+        })
     },
     html: function (node, value, vm) {
         node.innerHTML = this.getValue(value, vm);
