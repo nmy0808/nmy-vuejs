@@ -11,7 +11,12 @@ const compilerUtil = {
         return content.replace(reg, (...[, $1]) => this.getValue($1.trim(), vm));
     },
     model: function (node, value, vm) {
+        // 在第一次渲染的时候, 就给所有的属性添加观察者
+        Dep.target = new Watcher(vm, value, (newValue, oldValue) => {
+            node.value = newValue;
+        })
         node.value = this.getValue(value, vm);
+        Dep.target = null;
     },
     html: function (node, value, vm) {
         node.innerHTML = this.getValue(value, vm);
@@ -20,7 +25,15 @@ const compilerUtil = {
         node.innerText = this.getValue(value, vm);
     },
     content: function (node, content, vm) {
-        node.textContent = this.getContent(content, vm);
+        const reg = /\{\{(.+?)\}\}/gi;
+        const textContent = content.replace(reg, (...[, $1]) => {
+            Dep.target = new Watcher(vm, $1, (newValue, oldValue) => {
+                node.textContent = this.getContent(content, vm);
+            })
+            return this.getValue($1, vm);
+        })
+        node.textContent = textContent;
+        Dep.target = null;
     }
 }
 
@@ -123,17 +136,54 @@ class Observer {
     defineReactive(obj, attr, value) {
         // 如果属性的取值是一个对象, 则需要递归
         this.observer(value);
+        const dep = new Dep();
         Object.defineProperty(obj, attr, {
             set: (newVal) => {
                 this.observer(newVal);
                 if (value !== newVal) {
                     value = newVal;
                     console.log('set');
+                    dep.notify();
                 }
             },
             get() {
+                Dep.target && dep.addSub(Dep.target);
                 return value;
             },
         })
+    }
+}
+
+class Dep {
+    constructor() {
+        this.subs = [];
+    }
+
+    addSub(watcher) {
+        this.subs.push(watcher);
+    }
+
+    notify() {
+        this.subs.forEach(watcher => watcher.update());
+    }
+}
+
+class Watcher {
+    constructor(vm, attr, cb) {
+        this.vm = vm;
+        this.attr = attr;
+        this.cb = cb;
+        this.oldValue = this.getOldValue();
+    }
+
+    getOldValue() {
+        return compilerUtil.getValue(this.attr, this.vm);
+    }
+
+    update() {
+        const newValue = compilerUtil.getValue(this.attr, this.vm);
+        if (this.oldValue !== newValue) {
+            this.cb(newValue, this.oldValue);
+        }
     }
 }
