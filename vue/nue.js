@@ -30,9 +30,15 @@ const compilerUtil = {
         })
     },
     html: function (node, value, vm) {
+        Dep.target = new Watcher(vm, value, (newValue, oldValue) => {
+            node.innerHTML = newValue;
+        })
         node.innerHTML = this.getValue(value, vm);
     },
     text: function (node, value, vm) {
+        Dep.target = new Watcher(vm, value, (newValue, oldValue) => {
+            node.innerText = newValue;
+        })
         node.innerText = this.getValue(value, vm);
     },
     content: function (node, content, vm) {
@@ -61,9 +67,11 @@ class Nue {
         } else {
             this.$el = document.querySelector(el);
         }
-        this.$data = options.data;
-        this.$methods = options.methods;
+        this.$data = options.data || {};
+        this.$methods = options.methods || {};
+        this.$computed = options.computed;
         this.proxyData();
+        this.computed2data();
         if (this.$el) {
             new Observer(this.$data);
             new Compier(this);
@@ -84,6 +92,16 @@ class Nue {
                 set: (newValue) => {
                     this.$data[key] = newValue;
                 }
+            })
+        }
+    }
+
+    computed2data() {
+        for (const key in this.$computed) {
+            Object.defineProperty(this.$data, key, {
+                get: () => {
+                    return this.$computed[key].call(this);
+                },
             })
         }
     }
@@ -180,6 +198,7 @@ class Observer {
                 }
             },
             get() {
+                console.log(Dep.target)
                 Dep.target && dep.addSub(Dep.target);
                 return value;
             },
