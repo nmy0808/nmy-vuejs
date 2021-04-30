@@ -45,7 +45,12 @@ const compilerUtil = {
         })
         node.textContent = textContent;
         Dep.target = null;
-    }
+    },
+    on: function (node, value, vm, eventType) {
+        node.addEventListener(eventType, (e) => {
+            vm.$methods[value].call(vm, e);
+        })
+    },
 }
 
 class Nue {
@@ -57,6 +62,7 @@ class Nue {
             this.$el = document.querySelector(el);
         }
         this.$data = options.data;
+        this.$methods = options.methods;
         if (this.$el) {
             new Observer(this.$data);
             new Compier(this);
@@ -113,8 +119,10 @@ class Compier {
         attrs.forEach(attr => {
             const {name, value} = attr;
             if (name.startsWith('v-')) {
-                const [, directive] = name.split('-');
-                compilerUtil[directive](node, value, this.vm);
+                // v-on:click
+                const [directiveName, directiveType] = name.split(':');
+                const [, directive] = directiveName.split('-');
+                compilerUtil[directive](node, value, this.vm, directiveType);
             }
         })
     }

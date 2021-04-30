@@ -22,6 +22,7 @@
   asdasd
   {1231}}
   {{ msg }}
+  <button v-on:click="handleClick">v-on</button>
 </div>
 <script src="./nue.js"></script>
 <script>
@@ -37,6 +38,11 @@
             msg: 'hello',
             html: '<h3 style="color: lightslategrey">innerHTML</h3>',
             text: '<div>innerText</div>',
+        },
+        methods: {
+            handleClick(e) {
+                console.log(this, e);
+            },
         }
     })
     // console.log(vm);
