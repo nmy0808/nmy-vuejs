@@ -12,7 +12,16 @@ function install(Vue) {
 }
 class Store {
   constructor(options) {
-
+    this.state = options.state;
+    const getters = options.getters || {};
+    this.getters = {};
+    for (const key in getters) {
+      Object.defineProperty(this.getters, key, {
+        get: () => {
+          return getters[key](this.state);
+        }
+      })
+    }
   }
 }
 export default {
