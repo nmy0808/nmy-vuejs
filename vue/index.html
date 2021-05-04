@@ -1,57 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
 </head>
+
 <body>
-<div id="app">
-  <input type="text" v-model="name">
-  <input type="text" v-model="obj.a">
-  <input type="text" v-model="obj.b">
-  <div v-html="html"></div>
-  <div v-text="text"></div>
-  <p>{{name}}</p>
-  <p>{{age}}</p>
-  <ul>
-    <li>6</li>
-    <li>6</li>
-    <li>6</li>
-  </ul>
-  <h3>{{name}}-{{age}}</h3>
-  <h3>计算属性: {{calcAge}}</h3>
-  asdasd
-  {1231}}
-  {{ msg }}
-  <button v-on:click="handleClick">v-on</button>
-</div>
-<script src="./nue.js"></script>
-<script>
+  <div id="app">
+    <input type="text" v-model="name">
+    <input type="text" v-model="obj.a">
+    <input type="text" v-model="obj.b">
+    <div v-html="html"></div>
+    <div v-text="text"></div>
+    <p>{{name}}</p>
+    <p>{{age}}</p>
+    <ul>
+      <li>6</li>
+      <li>6</li>
+      <li>6</li>
+    </ul>
+    <h3>{{name}}-{{age}}</h3>
+    <h3>计算属性: {{calcAge}}</h3>
+    asdasd
+    {1231}}
+    {{ msg }}
+    <button v-on:click="handleClick">v-on</button>
+  </div>
+  <script src="./nue.js"></script>
+  <script>
     const vm = new Nue({
-        el: '#app',
-        data: {
-            obj: {
-                a: 'aa',
-                b: 'bb',
-            },
-            name: 'nmy',
-            age: 18,
-            msg: 'hello',
-            html: '<h3 style="color: lightslategrey">innerHTML</h3>',
-            text: '<div>innerText</div>',
+      el: '#app',
+      data: {
+        obj: {
+          a: 'aa',
+          b: 'bb',
         },
-        methods: {
-            handleClick(e) {
-                console.log(this, e);
-            },
+        name: 'nmy',
+        age: 18,
+        msg: 'hello',
+        html: '<h3 style="color: lightslategrey">innerHTML</h3>',
+        text: '<div>innerText</div>',
+      },
+      methods: {
+        handleClick(e) {
+          console.log(this, e);
         },
-        computed: {
-            calcAge() {
-                return this.age * 10;
-            }
-        },
+      },
+      computed: {
+        calcAge() {
+          return this.age * 10;
+        }
+      },
     })
     // console.log(vm);
-</script>
+  </script>
 </body>
+
 </html>
