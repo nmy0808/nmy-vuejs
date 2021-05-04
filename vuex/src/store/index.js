@@ -2,7 +2,27 @@ import Vue from 'vue'
 import Nuex from '@/store/nuex.js'
 
 Vue.use(Nuex);
-
+const home = {
+  state: {
+    name: 'homeName',
+  }
+};
+const home2_1 = {
+  state: {
+    name: 'homeName2_1',
+  }
+};
+const home2 = {
+  state: {
+    name: 'homeName2',
+  },
+  modules: { home2_1 }
+};
+const home3 = {
+  state: {
+    name: 'homeName3',
+  },
+};
 export default new Nuex.Store({
   state: {
     msg: 'hello',
@@ -34,6 +54,8 @@ export default new Nuex.Store({
     }
   },
   modules: {
-
+    home,
+    home2,
+    home3,
   }
 });

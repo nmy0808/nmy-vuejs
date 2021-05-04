@@ -1,6 +1,9 @@
 <template>
   <div id="app">
+    <h3>同步</h3>
     <Com1 />
+    <hr />
+    <h3>异步</h3>
     <Com2 />
   </div>
 </template>
