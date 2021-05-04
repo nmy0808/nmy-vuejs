@@ -10,10 +10,10 @@
 export default {
   methods: {
     onIncrease() {
-      this.$store.commit("increase", 1);
+      this.$store.dispatch("asyncIncrease", 1);
     },
     onDecrease() {
-      this.$store.commit("decrease", 1);
+      this.$store.dispatch("asyncDecrease", 1);
     },
   },
 };

@@ -22,7 +22,16 @@ export default new Nuex.Store({
     }
   },
   actions: {
-
+    asyncIncrease({ commit }, payLoad) {
+      setTimeout(() => {
+        commit('increase', payLoad);
+      }, 1000);
+    },
+    asyncDecrease({ commit }, payLoad) {
+      setTimeout(() => {
+        commit('decrease', payLoad);
+      }, 1000);
+    }
   },
   modules: {
 
