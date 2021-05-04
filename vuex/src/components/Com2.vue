@@ -1,13 +1,22 @@
 <template>
   <div class="wrapper">
     {{ $store.state.num }}
-      <button>+</button>
-    <button>-</button>
+    <button @click="onIncrease">+</button>
+    <button @click="onDecrease">-</button>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    onIncrease() {
+      this.$store.commit("increase", 1);
+    },
+    onDecrease() {
+      this.$store.commit("decrease", 1);
+    },
+  },
+};
 </script>
 
 <style scoped>

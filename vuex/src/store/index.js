@@ -14,7 +14,12 @@ export default new Nuex.Store({
     }
   },
   mutations: {
-
+    increase(state, payLoad) {
+      state.num += payLoad;
+    },
+    decrease(state, payLoad) {
+      state.num -= payLoad;
+    }
   },
   actions: {
 
