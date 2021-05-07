@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- <a href="#home">home</a>
+  <a href="#about">about</a> -->
+  <button onclick="go('/home')">home</button>
+  <button onclick="go('/about')">about</button>
+  <div id="html"></div>
+  <script>
+    const oHtml = document.querySelector('#html');
+    // window.addEventListener('hashchange', () => {
+    //   oHtml.innerHTML = location.hash;
+    // })
+    // window.addEventListener('load', () => {
+    //   oHtml.innerHTML = location.hash;
+    // })
+    function go(path) {
+      history.pushState(null, null, path);
+      oHtml.innerHTML = location.pathname;
+    }
+    window.addEventListener('popstate', () => {
+      oHtml.innerHTML = location.pathname;
+    })
+    window.addEventListener('load', () => {
+      oHtml.innerHTML = location.pathname;
+
+    })
+  </script>
+</body>
+
+</html>
